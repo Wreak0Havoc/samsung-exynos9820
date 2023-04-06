@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        model: [ "G970F,G973F,G975F", "N975F" ]
+        model: [ "G975F" ]
 
     steps:
       - uses: actions/checkout@v3
@@ -54,19 +54,29 @@ jobs:
         run: |
           set -e -o pipefail
           ./cruelbuild config                    \
+                       os_patch_level=2022-10    \
                        model=${{ matrix.model }} \
-                       name="Cruel-devel"        \
+                       name="KEMOZ"              \
                        toolchain=$TOOLCHAIN      \
                        +magisk                   \
-                       +nohardening              \
+                       +nohardening2             \
                        +ttl                      \
-                       +wireguard                \
                        +cifs                     \
                        +sdfat                    \
                        +ntfs                     \
                        +force_dex_wqhd           \
                        +morosound                \
                        +boeffla_wl_blocker       \
+                       +fp_boost                 \
+                       +sched_powersave          \
+                       +sched_performance        \
+                       +nodebug                  \
+                       +noksm                    \
+                       +nomodules                \
+                       +noaudit                  \
+                       +usb_serial               \
+                       +fake_config              \
+                       +dtb                      \
           2>&1 | tee config.info
 
       - name: Install gcc-aarch64-linux-gnu
